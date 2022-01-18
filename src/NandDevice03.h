@@ -30,7 +30,7 @@
  */
 class NandDevice03 : public NandDevice02 {
  protected:
-  BYTE* vfSpace; /* virtual flash storage space in memory */
+  BYTE *vfSpace; /* virtual flash storage space in memory */
 
   /* Constructor & Destructor */
  public:
@@ -38,18 +38,18 @@ class NandDevice03 : public NandDevice02 {
   virtual ~NandDevice03(void);
 
  public:
-  virtual RV QueryInterface(const IID& /*iid*/, void** /*ppv*/);
+  virtual RV QueryInterface(const IID & /*iid*/, void ** /*ppv*/);
 
  public:
   /* Methods */
-  virtual RV Initialize(const VFD_INFO& /*info*/);
+  virtual RV Initialize(const VFD_INFO & /*info*/);
   virtual RV Release(void);
 
   virtual RV EraseBlock(BLOCK_ID /*blockID*/);
   virtual RV ReadPage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/,
-                      BYTE* /*buffer*/, int /*offset*/ = 0, int /*size*/ = 0);
+                      BYTE * /*buffer*/, int /*offset*/ = 0, int /*size*/ = 0);
   virtual RV WritePage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/,
-                       const BYTE* /*buffer*/, int /*offset*/ = 0,
+                       const BYTE * /*buffer*/, int /*offset*/ = 0,
                        int /*size*/ = 0);
 };  // class NandDevice03
 

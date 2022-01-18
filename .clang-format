@@ -1,0 +1,7 @@
+BasedOnStyle: Google
+DerivePointerAlignment: false
+PointerAlignment: Right
+
+# Default for clang-8, changed in later clangs. Set explicitly for forwards
+# compatibility with modern clangs
+IncludeBlocks: Preserve

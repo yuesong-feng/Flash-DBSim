@@ -6,30 +6,21 @@ typedef struct LRUBCB {
   int page_id;
   int frame_id;
   int dirty;
-  LRUBCB* next;
+  LRUBCB *next;
 
  public:
-  LRUBCB() {
-    page_id = -1;
-    frame_id = -1;
-    dirty = -1;
-    next = NULL;
-  }
+  LRUBCB() : page_id(-1), frame_id(-1), dirty(-1), next(NULL) {}
   ~LRUBCB() {}
 } LRUBCB;
 
 typedef struct LRUElement {
  public:
   int frame_id;
-  LRUElement* LessRecent;
-  LRUElement* MoreRecent;
+  LRUElement *LessRecent;
+  LRUElement *MoreRecent;
 
  public:
-  LRUElement() {
-    frame_id = -1;
-    LessRecent = NULL;
-    MoreRecent = NULL;
-  }
+  LRUElement() : frame_id(-1), LessRecent(NULL), MoreRecent(NULL) {}
   ~LRUElement() {}
 } LRUElement;
 
@@ -41,8 +32,8 @@ class LRU : public BMgr {
   int FixPage(int page_id);
   NewPage FixNewPage(LBA lba);
   int UnFixPage(int page_id);
-  void ReadFrame(int frame_id, char* buffer);
-  void WriteFrame(int frame_id, const char* buffer);
+  void ReadFrame(int frame_id, char *buffer);
+  void WriteFrame(int frame_id, const char *buffer);
   int WriteDirty(void);
   double HitRatio(void);
   void RWInfo();
@@ -51,8 +42,8 @@ class LRU : public BMgr {
 
  private:
   int hash(int page_id);
-  LRUBCB* PageToLRUBCB(int page_id);
-  void RemoveLRUBCB(LRUBCB* pb);
+  LRUBCB *PageToLRUBCB(int page_id);
+  void RemoveLRUBCB(LRUBCB *pb);
   void InsertLRUEle(int frame_id);
   void RemoveLRUEle(int frame_id);
   void AdjustLRUList(int frame_id);
@@ -62,11 +53,11 @@ class LRU : public BMgr {
 
  private:
   int ftop[DEFBUFSIZE];
-  LRUBCB* ptob[DEFBUFSIZE];
+  LRUBCB *ptob[DEFBUFSIZE];
   bFrame buf[DEFBUFSIZE];
   map<LBA, PID> maplist;
-  LRUElement* lru;
-  LRUElement* mru;
+  LRUElement *lru;
+  LRUElement *mru;
   int hit;
   int total;
   int flashreadcount;

@@ -56,18 +56,18 @@ typedef struct BLOCK_STATE {
   int deadPages : 8;      /* The count of dead pages */
   int allocatedPages : 8; /* The count of allocated pages */
 
-  PAGE_STATE*
-      pageStates; /* The states of pages in block, 2 bits indicate 1 state */
+  PAGE_STATE
+      *pageStates; /* The states of pages in block, 2 bits indicate 1 state */
 } BS;
 
 /* FTL01. See also 'FTL01.readme'
  */
 class FTL01 : public IFTL {
  protected:
-  BLOCK_STATE* blockState; /* Block states */
+  BLOCK_STATE *blockState; /* Block states */
 
-  PBA* mapList;        /* LBA-PBA map list */
-  LBA* reverseMapList; /* PBA-LBA map list */
+  PBA *mapList;        /* LBA-PBA map list */
+  LBA *reverseMapList; /* PBA-LBA map list */
   int mapListPoint;    /* point to a specified position, used to find next empty
                           LBA faster */
 
@@ -83,18 +83,18 @@ class FTL01 : public IFTL {
   ~FTL01(void);
 
  public:
-  virtual RV QueryInterface(const IID& /*iid*/, void** /*ppv*/);
+  virtual RV QueryInterface(const IID & /*iid*/, void ** /*ppv*/);
 
  public:
   /* Methods */
-  virtual RV Initialize(const FTL_INFO& /*info*/, const IVFD* /*device*/);
+  virtual RV Initialize(const FTL_INFO & /*info*/, const IVFD * /*device*/);
   virtual RV Release(void);
 
-  virtual int AllocPage(int /*count*/, LBA* /*lbas*/);
+  virtual int AllocPage(int /*count*/, LBA * /*lbas*/);
   virtual RV ReleasePage(LBA /*lba*/);
-  virtual RV ReadPage(LBA /*lba*/, BYTE* /*buffer*/, int /*offset*/,
+  virtual RV ReadPage(LBA /*lba*/, BYTE * /*buffer*/, int /*offset*/,
                       size_t /*size*/);
-  virtual RV WritePage(LBA /*lba*/, const BYTE* /*buffer*/, int /*offset*/,
+  virtual RV WritePage(LBA /*lba*/, const BYTE * /*buffer*/, int /*offset*/,
                        size_t /*size*/);
 
  protected:

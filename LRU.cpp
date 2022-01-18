@@ -16,7 +16,7 @@ LRU::LRU() {
 
 LRU::~LRU() {
   //释放lru链表
-  LRUElement* p = mru;
+  LRUElement *p = mru;
   while (p != NULL) {
     mru = mru->LessRecent;
     delete p;
@@ -25,8 +25,8 @@ LRU::~LRU() {
   lru = mru = NULL;
 
   //释放控制块节点
-  LRUBCB* pb = NULL;
-  LRUBCB* head = NULL;
+  LRUBCB *pb = NULL;
+  LRUBCB *head = NULL;
   ;
   for (int i = 0; i < DEFBUFSIZE; i++) {
     head = ptob[i];
@@ -43,7 +43,7 @@ LRU::~LRU() {
 
 void LRU::Init() {
   //释放lru链表
-  LRUElement* p = mru;
+  LRUElement *p = mru;
   while (p != NULL) {
     mru = mru->LessRecent;
     delete p;
@@ -52,8 +52,8 @@ void LRU::Init() {
   lru = mru = NULL;
 
   //释放控制块节点
-  LRUBCB* pb = NULL;
-  LRUBCB* head = NULL;
+  LRUBCB *pb = NULL;
+  LRUBCB *head = NULL;
   ;
   for (int i = 0; i < DEFBUFSIZE; i++) {
     head = ptob[i];
@@ -84,7 +84,7 @@ int LRU::FixPage(int page_id) {
   int frid = -1;
   int rv = -1;
   int hk = hash(page_id);
-  LRUBCB* pb = NULL;
+  LRUBCB *pb = NULL;
   pb = PageToLRUBCB(page_id);
 
   /*读计数加1*/
@@ -104,7 +104,7 @@ int LRU::FixPage(int page_id) {
     frid = SelectVictim();
 
     /*正常情形下，此时应该从二级存储器读入需要加载的数据*/
-    rv = f_read_page(page_id, (BYTE*)(buf[frid].field), 0, FRAMESIZE);
+    rv = f_read_page(page_id, (BYTE *)(buf[frid].field), 0, FRAMESIZE);
     if (rv == RV_ERROR_INVALID_PAGE_STATE) {
       printf("page readed is invalid\n");
     }
@@ -143,7 +143,7 @@ NewPage LRU::FixNewPage(LBA lba) {
   np.page_id = -1;
   int pid = -1;
   int frid = -1;
-  LRUBCB* pb = NULL;
+  LRUBCB *pb = NULL;
 
   /* 申请分配新数据页 */
   f_alloc_page(1, &pid);
@@ -181,7 +181,7 @@ NewPage LRU::FixNewPage(LBA lba) {
 
 int LRU::UnFixPage(int page_id) {
   ASSERT(page_id >= 0);
-  LRUBCB* pb = NULL;
+  LRUBCB *pb = NULL;
   pb = PageToLRUBCB(page_id);
   int rv = -1;
 
@@ -197,7 +197,7 @@ int LRU::UnFixPage(int page_id) {
   return 0;
 }
 
-void LRU::ReadFrame(int frame_id, char* buffer) {
+void LRU::ReadFrame(int frame_id, char *buffer) {
   ASSERT(frame_id >= 0);
   ASSERT(buffer != NULL);
 
@@ -205,7 +205,7 @@ void LRU::ReadFrame(int frame_id, char* buffer) {
   return;
 }
 
-void LRU::WriteFrame(int frame_id, const char* buffer) {
+void LRU::WriteFrame(int frame_id, const char *buffer) {
   ASSERT(frame_id >= 0);
   ASSERT(buffer != NULL);
 
@@ -215,14 +215,14 @@ void LRU::WriteFrame(int frame_id, const char* buffer) {
 }
 
 int LRU::WriteDirty() {
-  LRUBCB* pb = NULL;
+  LRUBCB *pb = NULL;
   int rv = -1;
   for (int i = 0; i < DEFBUFSIZE; i++) {
     pb = ptob[i];
     while (pb != NULL) {
       if (pb->dirty == 1) {
         //程序结束时，我们应该将脏页写回二级存储器
-        rv = f_write_page(pb->page_id, (BYTE*)(buf[pb->frame_id].field), 0,
+        rv = f_write_page(pb->page_id, (BYTE *)(buf[pb->frame_id].field), 0,
                           FRAMESIZE);
         if (rv == RV_ERROR_FLASH_NO_MEMORY) {
           printf("no more flash memory \n");
@@ -264,7 +264,7 @@ int LRU::LBAToPID(LBA lba) {
 void LRU::SetDirty(int frame_id) {
   ASSERT(frame_id >= 0);
   int pid = -1;
-  LRUBCB* pb = NULL;
+  LRUBCB *pb = NULL;
   pid = ftop[frame_id];
   pb = PageToLRUBCB(pid);
   if (pb->dirty == 0) {
@@ -281,10 +281,10 @@ int LRU::hash(int page_id) {
   return hk;
 }
 
-LRUBCB* LRU::PageToLRUBCB(int page_id) {
+LRUBCB *LRU::PageToLRUBCB(int page_id) {
   ASSERT(page_id >= 0);
 
-  LRUBCB* pb = NULL;
+  LRUBCB *pb = NULL;
   int hk = -1;
   hk = hash(page_id);
   pb = ptob[hk];
@@ -294,10 +294,10 @@ LRUBCB* LRU::PageToLRUBCB(int page_id) {
   return pb;
 }
 
-void LRU::RemoveLRUBCB(LRUBCB* pb) {
+void LRU::RemoveLRUBCB(LRUBCB *pb) {
   ASSERT(pb != NULL);
 
-  LRUBCB* head = NULL;
+  LRUBCB *head = NULL;
   head = ptob[hash(pb->page_id)];
 
   /* 若该LRUBCB正好在桶的首部 */
@@ -337,7 +337,7 @@ void LRU::RemoveLRUBCB(LRUBCB* pb) {
 /* 在LRU置换策略中，每次只需删除lru指向的元素，这里做一般化处理*/
 void LRU::RemoveLRUEle(int frame_id) {
   ASSERT(frame_id >= 0);
-  LRUElement* elem = NULL;
+  LRUElement *elem = NULL;
   elem = lru;
   if (elem == NULL) {
     return;
@@ -382,7 +382,7 @@ void LRU::RemoveLRUEle(int frame_id) {
 void LRU::InsertLRUEle(int frame_id) {
   ASSERT(frame_id >= 0);
 
-  LRUElement* elem = NULL;
+  LRUElement *elem = NULL;
   elem = new LRUElement();
   elem->frame_id = frame_id;
   elem->LessRecent = NULL;
@@ -401,7 +401,7 @@ void LRU::InsertLRUEle(int frame_id) {
 
 void LRU::AdjustLRUList(int frame_id) {
   ASSERT(frame_id >= 0);
-  LRUElement* elem = NULL;
+  LRUElement *elem = NULL;
   elem = mru;
 
   /* 若链表为空*/
@@ -441,8 +441,8 @@ void LRU::AdjustLRUList(int frame_id) {
 }
 
 int LRU::SelectVictim() {
-  LRUBCB* pb = NULL;
-  LRUElement* elem = NULL;
+  LRUBCB *pb = NULL;
+  LRUElement *elem = NULL;
   int frid = -1;
   int rv = -1;
 
@@ -467,7 +467,7 @@ int LRU::SelectVictim() {
 
   if (pb->dirty == 1) {
     //正常情况下，应该将数据写回二级存储器，这里只计数
-    rv = f_write_page(pb->page_id, (BYTE*)(buf[pb->frame_id].field), 0,
+    rv = f_write_page(pb->page_id, (BYTE *)(buf[pb->frame_id].field), 0,
                       FRAMESIZE);
     if (rv == RV_ERROR_FLASH_NO_MEMORY) printf("no more flash memory \n");
 

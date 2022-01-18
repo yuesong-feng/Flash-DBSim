@@ -29,26 +29,26 @@
 /* Public interfaces of Flash-DBSim System */
 typedef class FlashDBSim {
  protected:
-  static IFTL* ftl;
+  static IFTL *ftl;
 
  public:
-  static const IFTL* GetFTLModule(void) { return FlashDBSim::ftl; }
+  static const IFTL *GetFTLModule(void) { return FlashDBSim::ftl; }
 
   /* Constructor */
  protected:
   FlashDBSim(void) {}
 
  public:
-  static RV Initialize(const VFD_INFO& /*vfdInfo*/,
-                       const FTL_INFO& /*ftlInfo*/); /* Initialization */
+  static RV Initialize(const VFD_INFO & /*vfdInfo*/,
+                       const FTL_INFO & /*ftlInfo*/); /* Initialization */
   static RV Release(void); /* Release Flash-DBSim system */
 
-  static int AllocPage(int /*count*/, LBA* /*lbas*/);
+  static int AllocPage(int /*count*/, LBA * /*lbas*/);
   static RV ReleasePage(LBA /*lba*/);
 
-  static RV ReadPage(LBA /*lba*/, BYTE* /*buffer*/, int /*offset*/ = 0,
+  static RV ReadPage(LBA /*lba*/, BYTE * /*buffer*/, int /*offset*/ = 0,
                      size_t /*size*/ = 0);
-  static RV WritePage(LBA /*lba*/, const BYTE* /*buffer*/, int /*offset*/ = 0,
+  static RV WritePage(LBA /*lba*/, const BYTE * /*buffer*/, int /*offset*/ = 0,
                       size_t /*size*/ = 0);
 } FlashDBSim;  // class FlashDBSim
 

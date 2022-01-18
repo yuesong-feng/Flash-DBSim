@@ -36,7 +36,7 @@ typedef unsigned char BYTE;
 typedef int RV;
 typedef int BLOCK_ID;
 typedef int PAGE_ID;
-typedef void* PVOID; /* void pointer */
+typedef void *PVOID; /* void pointer */
 
 typedef int LBA; /* Logical Block Address */
 
@@ -58,7 +58,7 @@ typedef enum FLASH_TYPE {
 /* IUNKNOWN Interface */
 typedef INTERFACE_F IUNKNOWN {
  public:
-  virtual RV QueryInterface(const IID& /*iid*/, void** /*ppv*/) = 0;
+  virtual RV QueryInterface(const IID & /*iid*/, void ** /*ppv*/) = 0;
   // virtual int AddRef(void) = 0;
   // virtual int Release(void) = 0;
 }
@@ -202,24 +202,24 @@ typedef INTERFACE_F IVFD_MODULE : public IUNKNOWN {
 
   /* Methods */
   virtual RV Initialize(
-      const VFD_INFO& /*info*/) = 0; /* Initialize VFD Module */
-  virtual RV Release(void) = 0;      /* Release VFD Module */
+      const VFD_INFO & /*info*/) = 0; /* Initialize VFD Module */
+  virtual RV Release(void) = 0;       /* Release VFD Module */
 
   virtual RV EraseBlock(BLOCK_ID /*blockID*/) = 0; /* erase specified block */
   virtual RV ReadPage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/,
-                      BYTE* /*buffer*/, int /*offset*/ = 0,
+                      BYTE * /*buffer*/, int /*offset*/ = 0,
                       int /*size*/ = 0) = 0; /* read specified page */
   virtual RV WritePage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/,
-                       const BYTE* /*buffer*/, int /*offset*/ = 0,
+                       const BYTE * /*buffer*/, int /*offset*/ = 0,
                        int /*size*/ = 0) = 0; /* write specified page */
 }
 IVFD;
 
 typedef INTERFACE_F IVFD_COUNTER : public IUNKNOWN {
  protected:
-  int* readCounter;  /* read counter of each PAGE */
-  int* writeCounter; /* write counter of each PAGE */
-  int* eraseCounter; /* erase counter of each BLOCK */
+  int *readCounter;  /* read counter of each PAGE */
+  int *writeCounter; /* write counter of each PAGE */
+  int *eraseCounter; /* erase counter of each BLOCK */
 
   /* Constructor */
  protected:
@@ -308,47 +308,48 @@ typedef struct FTL_INFO {
 typedef INTERFACE_F IFTL_MODULE : public IUNKNOWN {
  protected:
   FTL_INFO info;     /* Module Information */
-  IVFD* flashDevice; /* related flash device */
+  IVFD *flashDevice; /* related flash device */
 
  public:
   virtual ~IFTL_MODULE() = default;
   /* Attributes */
-  FTL_INFO& GetModuleInfo(void) {
+  FTL_INFO &GetModuleInfo(void) {
     return info;
   } /* get FTL module information */
-  const IVFD* GetFlashDevice(void) {
+  const IVFD *GetFlashDevice(void) {
     return flashDevice;
   } /* get related flash device */
 
   /* Methods */
-  virtual RV Initialize(const FTL_INFO& /*info*/,
-                        const IVFD* /*device*/) = 0; /* initialize FTL module */
-  virtual RV Release(void) = 0;                      /* release FTL module */
+  virtual RV Initialize(
+      const FTL_INFO & /*info*/,
+      const IVFD * /*device*/) = 0; /* initialize FTL module */
+  virtual RV Release(void) = 0;     /* release FTL module */
 
   virtual int AllocPage(
-      int /*count*/, LBA* /*lbas*/) = 0; /* apply to allocate some new pages */
+      int /*count*/, LBA * /*lbas*/) = 0; /* apply to allocate some new pages */
   virtual RV ReleasePage(LBA /*lba*/) = 0; /* release one page */
-  virtual RV ReadPage(LBA /*lba*/, BYTE* /*buffer*/, int /*offset*/,
+  virtual RV ReadPage(LBA /*lba*/, BYTE * /*buffer*/, int /*offset*/,
                       size_t /*size*/) = 0; /* read specified page */
-  virtual RV WritePage(LBA /*lba*/, const BYTE* /*buffer*/, int /*offset*/,
+  virtual RV WritePage(LBA /*lba*/, const BYTE * /*buffer*/, int /*offset*/,
                        size_t /*size*/) = 0; /* write specified page */
 }
 IFTL;
 
-RV f_initialize(const VFD_INFO& vfdInfo, const FTL_INFO& ftlInfo);
+RV f_initialize(const VFD_INFO &vfdInfo, const FTL_INFO &ftlInfo);
 
 RV f_release(void);
 
-int f_alloc_page(int count, LBA* lbas);
+int f_alloc_page(int count, LBA *lbas);
 
 RV f_release_page(LBA lba);
 
-RV f_read_page(LBA lba, BYTE* buffer, int offset, size_t size);
+RV f_read_page(LBA lba, BYTE *buffer, int offset, size_t size);
 
-RV f_write_page(LBA lba, const BYTE* buffer, int offset, size_t size);
+RV f_write_page(LBA lba, const BYTE *buffer, int offset, size_t size);
 
-const IFTL* f_get_ftl_module(void);
+const IFTL *f_get_ftl_module(void);
 
-const IVFD* f_get_vfd_module(void);
+const IVFD *f_get_vfd_module(void);
 
 #endif  //__FLASH_DBSIM_I_H_INCLUDED__

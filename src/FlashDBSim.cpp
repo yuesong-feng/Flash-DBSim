@@ -6,15 +6,15 @@
 #include "NandDevice03.h"
 #include "NandDevice04.h"
 
-IFTL* FlashDBSim::ftl = NULL;
+IFTL *FlashDBSim::ftl = NULL;
 
 /* Initialization of Flash-DBSim */
-RV FlashDBSim::Initialize(const VFD_INFO& vfdInfo, const FTL_INFO& ftlInfo) {
+RV FlashDBSim::Initialize(const VFD_INFO &vfdInfo, const FTL_INFO &ftlInfo) {
   RV rv;
 
   FlashDBSim::Release();
 
-  IVFD* flashDevice = NULL;
+  IVFD *flashDevice = NULL;
 
   // create specified VFD module
   switch (vfdInfo.id) {
@@ -81,7 +81,7 @@ RV FlashDBSim::Initialize(const VFD_INFO& vfdInfo, const FTL_INFO& ftlInfo) {
 RV FlashDBSim::Release(void) {
   if (!ftl) return RV_OK;
 
-  IVFD* device = const_cast<IVFD*>(ftl->GetFlashDevice());
+  IVFD *device = const_cast<IVFD *>(ftl->GetFlashDevice());
 
   ftl->Release();
   delete ftl;
@@ -93,7 +93,7 @@ RV FlashDBSim::Release(void) {
 }
 
 /* Allocate a number of pages */
-int FlashDBSim::AllocPage(int count, LBA* lbas) {
+int FlashDBSim::AllocPage(int count, LBA *lbas) {
   ASSERT(ftl && lbas);
 
   return ftl->AllocPage(count, lbas);
@@ -107,43 +107,43 @@ RV FlashDBSim::ReleasePage(LBA lba) {
 }
 
 /* Read data from specified page */
-RV FlashDBSim::ReadPage(LBA lba, BYTE* buffer, int offset, size_t size) {
+RV FlashDBSim::ReadPage(LBA lba, BYTE *buffer, int offset, size_t size) {
   ASSERT(ftl);
 
   return ftl->ReadPage(lba, buffer, offset, size);
 }
 
 /* Write data to specified page */
-RV FlashDBSim::WritePage(LBA lba, const BYTE* buffer, int offset, size_t size) {
+RV FlashDBSim::WritePage(LBA lba, const BYTE *buffer, int offset, size_t size) {
   ASSERT(ftl);
 
   return ftl->WritePage(lba, buffer, offset, size);
 }
 
-RV f_initialize(const VFD_INFO& vfdInfo, const FTL_INFO& ftlInfo) {
+RV f_initialize(const VFD_INFO &vfdInfo, const FTL_INFO &ftlInfo) {
   return FlashDBSim::Initialize(vfdInfo, ftlInfo);
 }
 
 RV f_release(void) { return FlashDBSim::Release(); }
 
-int f_alloc_page(int count, LBA* lbas) {
+int f_alloc_page(int count, LBA *lbas) {
   return FlashDBSim::AllocPage(count, lbas);
 }
 
 RV f_release_page(LBA lba) { return FlashDBSim::ReleasePage(lba); }
 
-RV f_read_page(LBA lba, BYTE* buffer, int offset, size_t size) {
+RV f_read_page(LBA lba, BYTE *buffer, int offset, size_t size) {
   return FlashDBSim::ReadPage(lba, buffer, offset, size);
 }
 
-RV f_write_page(LBA lba, const BYTE* buffer, int offset, size_t size) {
+RV f_write_page(LBA lba, const BYTE *buffer, int offset, size_t size) {
   return FlashDBSim::WritePage(lba, buffer, offset, size);
 }
 
-const IFTL* f_get_ftl_module(void) { return FlashDBSim::GetFTLModule(); }
+const IFTL *f_get_ftl_module(void) { return FlashDBSim::GetFTLModule(); }
 
-const IVFD* f_get_vfd_module(void) {
-  IFTL* ftl = const_cast<IFTL*>(FlashDBSim::GetFTLModule());
+const IVFD *f_get_vfd_module(void) {
+  IFTL *ftl = const_cast<IFTL *>(FlashDBSim::GetFTLModule());
 
   if (ftl)
     return ftl->GetFlashDevice();

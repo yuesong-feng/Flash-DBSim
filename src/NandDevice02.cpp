@@ -15,8 +15,8 @@ NandDevice02::~NandDevice02(void) {
 }
 
 /* Query Interface */
-RV NandDevice02::QueryInterface(const IID& iid, /* ID of interface */
-                                void** ppv)     /* interface pointer */
+RV NandDevice02::QueryInterface(const IID &iid, /* ID of interface */
+                                void **ppv)     /* interface pointer */
 {
   /*if (iid == IID_IUnknown) {
           * ppv = static_cast<IVFD *>(this);
@@ -28,7 +28,7 @@ RV NandDevice02::QueryInterface(const IID& iid, /* ID of interface */
           * ppv = static_cast<IVFD_LATENCY *>(this);
   }*/
   if (iid == IID_IVFD_LATENCY) {
-    *ppv = static_cast<IVFD_LATENCY*>(this);
+    *ppv = static_cast<IVFD_LATENCY *>(this);
   } else {
     if (NandDevice01::QueryInterface(iid, ppv))
       return RV_ERROR_UNSUPPORT_INTERFACE;
@@ -40,7 +40,7 @@ RV NandDevice02::QueryInterface(const IID& iid, /* ID of interface */
 
 /* Initialize the 'NandDevice02' device
  */
-RV NandDevice02::Initialize(const VFD_INFO& info) {
+RV NandDevice02::Initialize(const VFD_INFO &info) {
   Release();
 
   // initialize module information
@@ -109,7 +109,7 @@ RV NandDevice02::EraseBlock(BLOCK_ID blockID) {
 
 /* Read data from specified page
  */
-RV NandDevice02::ReadPage(BLOCK_ID blockID, PAGE_ID pageID, BYTE* buffer,
+RV NandDevice02::ReadPage(BLOCK_ID blockID, PAGE_ID pageID, BYTE *buffer,
                           int offset, int size) {
   ASSERT(eraseCounter);
   ASSERT(blockID >= 0 && blockID < info.blockCount);
@@ -129,7 +129,7 @@ RV NandDevice02::ReadPage(BLOCK_ID blockID, PAGE_ID pageID, BYTE* buffer,
 
 /* Write data to specified page
  */
-RV NandDevice02::WritePage(BLOCK_ID blockID, PAGE_ID pageID, const BYTE* buffer,
+RV NandDevice02::WritePage(BLOCK_ID blockID, PAGE_ID pageID, const BYTE *buffer,
                            int offset, int size) {
   ASSERT(eraseCounter);
   ASSERT(blockID >= 0 && blockID < info.blockCount);
