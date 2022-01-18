@@ -1,0 +1,12 @@
+FlashDBSimDll Changlog
+
+version 1.6
+- A major rewrite/reorganization of the code
+- Greatly simplified the initialize function of the Flash-DBSim
+- Encapsulated into a DLL library, the means of calling interfaces of Flash-DBSim are changed.
+- Added/modified four new VFD modules: NandDevice01, NandDevice02, NandDevice03, NandDevice04
+- Remove 'MTD' module and its related codes
+- Numerous other bug fixes
+
+version 0.1-1.5
+- Was too lazy (or disorganized) to keep a detailed log of changes :)
