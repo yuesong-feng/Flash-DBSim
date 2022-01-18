@@ -11,7 +11,6 @@ make
 
 Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html)
 
-If you just want to use the library, you only need to care about the `src/flashdbsim_i.h` and the shared library `Flash-DBSim.o`.
 
 ## Copyright
 [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html) was originally developed in 2008 by [KDELab of USTC](http://kdelab.ustc.edu.cn/index.html). And was redevelopment by me in 2022. The main changes are as follows：
