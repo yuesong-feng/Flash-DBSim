@@ -4,6 +4,7 @@
  * Author: Su.Xuan <sdbchina|mail.ustc.edu.cn>
  *
  * Copyright (c) 2009 KDELab@USTC.
+ * Copyright (c) 2022 FENG Yuesong (yuesong-feng@foxmail.com).
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,32 +24,33 @@
 #ifndef __NAND_DEVICE_03_H_INCLUDED__
 #define __NAND_DEVICE_03_H_INCLUDED__
 
-#include "interface.h"
 #include "NandDevice02.h"
 
 /* NandDevice03. See also 'NandDevice03.readme'
  */
-class NandDevice03 : public NandDevice02
-{
-protected:
-	BYTE * vfSpace;	/* virtual flash storage space in memory */
+class NandDevice03 : public NandDevice02 {
+ protected:
+  BYTE* vfSpace; /* virtual flash storage space in memory */
 
-	/* Constructor & Destructor */
-public:
-	NandDevice03(void);
-	virtual ~NandDevice03(void);
+  /* Constructor & Destructor */
+ public:
+  NandDevice03(void);
+  virtual ~NandDevice03(void);
 
-public:
-	virtual RV QueryInterface(const IID& /*iid*/, void ** /*ppv*/);
+ public:
+  virtual RV QueryInterface(const IID& /*iid*/, void** /*ppv*/);
 
-public:
-	/* Methods */
-	virtual RV Initialize(const VFD_INFO& /*info*/);
-	virtual RV Release(void);
+ public:
+  /* Methods */
+  virtual RV Initialize(const VFD_INFO& /*info*/);
+  virtual RV Release(void);
 
-	virtual RV EraseBlock(BLOCK_ID /*blockID*/);
-	virtual RV ReadPage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/, BYTE * /*buffer*/, int /*offset*/ = 0, int /*size*/ = 0);
-    virtual RV WritePage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/, const BYTE * /*buffer*/, int /*offset*/ = 0, int /*size*/ = 0);
-}; // class NandDevice03
+  virtual RV EraseBlock(BLOCK_ID /*blockID*/);
+  virtual RV ReadPage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/,
+                      BYTE* /*buffer*/, int /*offset*/ = 0, int /*size*/ = 0);
+  virtual RV WritePage(BLOCK_ID /*blockID*/, PAGE_ID /*pageID*/,
+                       const BYTE* /*buffer*/, int /*offset*/ = 0,
+                       int /*size*/ = 0);
+};  // class NandDevice03
 
-#endif //__NAND_DEVICE_03_H_INCLUDED__
+#endif  //__NAND_DEVICE_03_H_INCLUDED__

@@ -1,9 +1,5 @@
 #include "BufferAlogrithm.h"
 
-BMgr::BMgr(void)
-{
-}
+BMgr::BMgr(void) {}
 
-BMgr::~BMgr()
-{		
-}
+BMgr::~BMgr() {}

@@ -1,165 +1,152 @@
 #include "FlashDBSim.h"
 
+#include "FTL01.h"
 #include "NandDevice01.h"
 #include "NandDevice02.h"
 #include "NandDevice03.h"
 #include "NandDevice04.h"
 
-#include "FTL01.h"
-
-IFTL * FlashDBSim::ftl = NULL;
+IFTL* FlashDBSim::ftl = NULL;
 
 /* Initialization of Flash-DBSim */
-RV FlashDBSim::Initialize(const VFD_INFO& vfdInfo,
-						  const FTL_INFO& ftlInfo)
-{
-	RV rv;
+RV FlashDBSim::Initialize(const VFD_INFO& vfdInfo, const FTL_INFO& ftlInfo) {
+  RV rv;
 
-	FlashDBSim::Release();
+  FlashDBSim::Release();
 
-	IVFD * flashDevice = NULL;
+  IVFD* flashDevice = NULL;
 
-	// create specified VFD module
-	switch (vfdInfo.id) {
-		case ID_NAND_DEVICE_01:
-			flashDevice = new NandDevice01();
-			break;
-		case ID_NAND_DEVICE_02:
-			flashDevice = new NandDevice02();
-			break;
-		case ID_NAND_DEVICE_03:
-			flashDevice = new NandDevice03();
-			break;
-		case ID_NAND_DEVICE_04:
-			flashDevice = new NandDevice04();
-			break;
-		default:
-			//flashDevice = NULL;
-			break;
-	} // switch (vfdInfo.id)
+  // create specified VFD module
+  switch (vfdInfo.id) {
+    case ID_NAND_DEVICE_01:
+      flashDevice = new NandDevice01();
+      break;
+    case ID_NAND_DEVICE_02:
+      flashDevice = new NandDevice02();
+      break;
+    case ID_NAND_DEVICE_03:
+      flashDevice = new NandDevice03();
+      break;
+    case ID_NAND_DEVICE_04:
+      flashDevice = new NandDevice04();
+      break;
+    default:
+      // flashDevice = NULL;
+      break;
+  }  // switch (vfdInfo.id)
 
-	if (!flashDevice) return RV_ERROR_WRONG_MODULE_ID;
+  if (!flashDevice) return RV_ERROR_WRONG_MODULE_ID;
 
-	// initialize VFD module
-	rv = flashDevice->Initialize(vfdInfo);
+  // initialize VFD module
+  rv = flashDevice->Initialize(vfdInfo);
 
-	if (rv != RV_OK) {
-		delete flashDevice;
-		return RV_ERROR_MODULE_INITIALIZE_FAILED;
-	}
+  if (rv != RV_OK) {
+    delete flashDevice;
+    return RV_ERROR_MODULE_INITIALIZE_FAILED;
+  }
 
-	// create specified FTL module
-	ftl = NULL;
+  // create specified FTL module
+  ftl = NULL;
 
-	switch (ftlInfo.id) {
-		case ID_FTL_01:
-			ftl = new FTL01();
-			break;
-		default:
-			//ftl = NULL;
-			break;
-	} // switch (ftlInfo.id)
+  switch (ftlInfo.id) {
+    case ID_FTL_01:
+      ftl = new FTL01();
+      break;
+    default:
+      // ftl = NULL;
+      break;
+  }  // switch (ftlInfo.id)
 
-	if (!ftl) {
-		flashDevice->Release(); delete flashDevice;
-		return RV_ERROR_WRONG_MODULE_ID;
-	}
+  if (!ftl) {
+    flashDevice->Release();
+    delete flashDevice;
+    return RV_ERROR_WRONG_MODULE_ID;
+  }
 
-	// initialize FTL module
-	rv = ftl->Initialize(ftlInfo, flashDevice);
+  // initialize FTL module
+  rv = ftl->Initialize(ftlInfo, flashDevice);
 
-	if (rv != RV_OK) {
-		flashDevice->Release(); delete flashDevice;
-		delete ftl; ftl = NULL;
-		return RV_ERROR_MODULE_INITIALIZE_FAILED;
-	}
+  if (rv != RV_OK) {
+    flashDevice->Release();
+    delete flashDevice;
+    delete ftl;
+    ftl = NULL;
+    return RV_ERROR_MODULE_INITIALIZE_FAILED;
+  }
 
-	return RV_OK;
+  return RV_OK;
 }
 
 /* Release the Flash-DBSim System */
-RV FlashDBSim::Release(void)
-{
-	if (!ftl) return RV_OK;
+RV FlashDBSim::Release(void) {
+  if (!ftl) return RV_OK;
 
-	IVFD * device = const_cast<IVFD *>(ftl->GetFlashDevice());
+  IVFD* device = const_cast<IVFD*>(ftl->GetFlashDevice());
 
-	ftl->Release(); delete ftl; ftl = NULL;
-	device->Release(); delete device;
+  ftl->Release();
+  delete ftl;
+  ftl = NULL;
+  device->Release();
+  delete device;
 
-	return RV_OK;
+  return RV_OK;
 }
 
 /* Allocate a number of pages */
-int FlashDBSim::AllocPage(int count,
-						  LBA * lbas)
-{
-	ASSERT(ftl && lbas);
+int FlashDBSim::AllocPage(int count, LBA* lbas) {
+  ASSERT(ftl && lbas);
 
-	return ftl->AllocPage(count, lbas);
+  return ftl->AllocPage(count, lbas);
 }
 
 /* Release specified page */
-RV FlashDBSim::ReleasePage(LBA lba)
-{
-	ASSERT(ftl);
+RV FlashDBSim::ReleasePage(LBA lba) {
+  ASSERT(ftl);
 
-	return ftl->ReleasePage(lba);
+  return ftl->ReleasePage(lba);
 }
 
 /* Read data from specified page */
-RV FlashDBSim::ReadPage(LBA lba,
-						BYTE * buffer,
-						int offset,
-						size_t size)
-{
-	ASSERT(ftl);
+RV FlashDBSim::ReadPage(LBA lba, BYTE* buffer, int offset, size_t size) {
+  ASSERT(ftl);
 
-	return ftl->ReadPage(lba, buffer, offset, size);
+  return ftl->ReadPage(lba, buffer, offset, size);
 }
 
 /* Write data to specified page */
-RV FlashDBSim::WritePage(LBA lba,
-						 const BYTE * buffer,
-						 int offset,
-						 size_t size)
-{
-	ASSERT(ftl);
+RV FlashDBSim::WritePage(LBA lba, const BYTE* buffer, int offset, size_t size) {
+  ASSERT(ftl);
 
-	return ftl->WritePage(lba, buffer, offset ,size);
+  return ftl->WritePage(lba, buffer, offset, size);
 }
 
 RV f_initialize(const VFD_INFO& vfdInfo, const FTL_INFO& ftlInfo) {
-	return FlashDBSim::Initialize(vfdInfo, ftlInfo);
+  return FlashDBSim::Initialize(vfdInfo, ftlInfo);
 }
 
-RV f_release(void) {
-	return FlashDBSim::Release();
+RV f_release(void) { return FlashDBSim::Release(); }
+
+int f_alloc_page(int count, LBA* lbas) {
+  return FlashDBSim::AllocPage(count, lbas);
 }
 
-int f_alloc_page(int count, LBA * lbas) {
-	return FlashDBSim::AllocPage(count, lbas);
+RV f_release_page(LBA lba) { return FlashDBSim::ReleasePage(lba); }
+
+RV f_read_page(LBA lba, BYTE* buffer, int offset, size_t size) {
+  return FlashDBSim::ReadPage(lba, buffer, offset, size);
 }
 
-RV f_release_page(LBA lba) {
-	return FlashDBSim::ReleasePage(lba);
+RV f_write_page(LBA lba, const BYTE* buffer, int offset, size_t size) {
+  return FlashDBSim::WritePage(lba, buffer, offset, size);
 }
 
-RV f_read_page(LBA lba, BYTE * buffer, int offset, size_t size) {
-	return FlashDBSim::ReadPage(lba, buffer, offset, size);
-}
+const IFTL* f_get_ftl_module(void) { return FlashDBSim::GetFTLModule(); }
 
-RV f_write_page(LBA lba, const BYTE * buffer, int offset, size_t size) {
-	return FlashDBSim::WritePage(lba, buffer, offset, size);
-}
+const IVFD* f_get_vfd_module(void) {
+  IFTL* ftl = const_cast<IFTL*>(FlashDBSim::GetFTLModule());
 
-const IFTL * f_get_ftl_module(void) {
-	return FlashDBSim::GetFTLModule();
-}
-
-const IVFD * f_get_vfd_module(void) {
-	IFTL * ftl = const_cast<IFTL *>(FlashDBSim::GetFTLModule());
-
-	if (ftl) return ftl->GetFlashDevice();
-	else return NULL;
+  if (ftl)
+    return ftl->GetFlashDevice();
+  else
+    return NULL;
 }

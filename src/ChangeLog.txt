@@ -1,5 +1,12 @@
 FlashDBSimDll Changlog
 
+version 2.0
+- A major rewrite/reorganization of the code
+- Greatly simplify the code structure, get rid of DLL and Visual Studio framework
+- Support multiple os and platform including Linux, macOS, Windows, FreeBSD, etc
+- Migrate to modern C++ 11
+- Numerous other bug fixed
+
 version 1.6
 - A major rewrite/reorganization of the code
 - Greatly simplified the initialize function of the Flash-DBSim

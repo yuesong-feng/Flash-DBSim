@@ -19,30 +19,30 @@ VFD Module - NandDevice04
 +-----------------------+---+
 | id					| -	|
 |						|	|
-| blockCount			| ¡Ì	|
-| pageCountPerBlock		| ¡Ì	|
-| pageSize				| ¡Ì	|
-| eraseLimitation		| ¡Ì	|
+| blockCount			| ï¿½ï¿½	|
+| pageCountPerBlock		| ï¿½ï¿½	|
+| pageSize				| ï¿½ï¿½	|
+| eraseLimitation		| ï¿½ï¿½	|
 |						|	|
-| readTime				| ¡Ì	|
-| programTime			| ¡Ì	|
-| eraseTime				| ¡Ì	|
+| readTime				| ï¿½ï¿½	|
+| programTime			| ï¿½ï¿½	|
+| eraseTime				| ï¿½ï¿½	|
 +-----------------------+---+ ('-' means not necessary)
 
 Others:
-	¡¤ NandDevice04 stores the I/O counters and I/O total latencies.
-	¡¤ NandDevice04 simulates a NAND-type device.
-	¡¤ NandDevice04 use a batch of disk spaces for data storage.
-	¡¤ NandDevice04 cannot read/write page or erase block when the corresponding block was physically broken.
-	¡¤ It's a signal of physically broken when the erase count of one block is larger than eraseLimitation.
+	ï¿½ï¿½ NandDevice04 stores the I/O counters and I/O total latencies.
+	ï¿½ï¿½ NandDevice04 simulates a NAND-type device.
+	ï¿½ï¿½ NandDevice04 use a batch of disk spaces for data storage.
+	ï¿½ï¿½ NandDevice04 cannot read/write page or erase block when the corresponding block was physically broken.
+	ï¿½ï¿½ It's a signal of physically broken when the erase count of one block is larger than eraseLimitation.
 
 Exception List
- ¡¤ Constructor/Destructor - None
- ¡¤ QueryInterface
+ ï¿½ï¿½ Constructor/Destructor - None
+ ï¿½ï¿½ QueryInterface
 	- RV_ERROR_UNSUPPORT_INTERFACE: The specified interface is not supported in NandDevice04.
- ¡¤ GetReadCount/GetWriteCount/GetEraseCount - None
- ¡¤ Initialize/Release - None
- ¡¤ EraseBlock/ReadPage/WritePage
+ ï¿½ï¿½ GetReadCount/GetWriteCount/GetEraseCount - None
+ ï¿½ï¿½ Initialize/Release - None
+ ï¿½ï¿½ EraseBlock/ReadPage/WritePage
 	- RV_ERROR_FLASH_BLOCK_BROKEN: The block supposed to be erased is physically broken.
 
 Update History

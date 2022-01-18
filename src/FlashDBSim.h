@@ -4,6 +4,7 @@
  * Author: Su.Xuan <sdbchina|mail.ustc.edu.cn>
  *
  * Copyright (c) 2008-2009 KDELab@USTC.
+ * Copyright (c) 2022 FENG Yuesong (yuesong-feng@foxmail.com).
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,29 +24,32 @@
 #ifndef __FLASH_DBSIM_H_INCLUDED__
 #define __FLASH_DBSIM_H_INCLUDED__
 
-#include "interface.h"
+#include "flashdbsim_i.h"
 
 /* Public interfaces of Flash-DBSim System */
 typedef class FlashDBSim {
-protected:
-	static IFTL *	ftl;
+ protected:
+  static IFTL* ftl;
 
-public:
-	static const IFTL * GetFTLModule(void) { return FlashDBSim::ftl; }
+ public:
+  static const IFTL* GetFTLModule(void) { return FlashDBSim::ftl; }
 
-	/* Constructor */
-protected:
-	FlashDBSim(void) {}
+  /* Constructor */
+ protected:
+  FlashDBSim(void) {}
 
-public:
-	static RV Initialize(const VFD_INFO& /*vfdInfo*/, const FTL_INFO& /*ftlInfo*/);	/* Initialization */
-	static RV Release(void);	/* Release Flash-DBSim system */
+ public:
+  static RV Initialize(const VFD_INFO& /*vfdInfo*/,
+                       const FTL_INFO& /*ftlInfo*/); /* Initialization */
+  static RV Release(void); /* Release Flash-DBSim system */
 
-	static int AllocPage(int /*count*/, LBA * /*lbas*/);
-	static RV ReleasePage(LBA /*lba*/);
+  static int AllocPage(int /*count*/, LBA* /*lbas*/);
+  static RV ReleasePage(LBA /*lba*/);
 
-	static RV ReadPage(LBA /*lba*/, BYTE * /*buffer*/, int /*offset*/ = 0, size_t /*size*/ = 0);
-	static RV WritePage(LBA /*lba*/, const BYTE * /*buffer*/, int /*offset*/ = 0, size_t /*size*/ = 0);
-} FlashDBSim; // class FlashDBSim
+  static RV ReadPage(LBA /*lba*/, BYTE* /*buffer*/, int /*offset*/ = 0,
+                     size_t /*size*/ = 0);
+  static RV WritePage(LBA /*lba*/, const BYTE* /*buffer*/, int /*offset*/ = 0,
+                      size_t /*size*/ = 0);
+} FlashDBSim;  // class FlashDBSim
 
-#endif //__FLASH_DBSIM_H_INCLUDED__
+#endif  //__FLASH_DBSIM_H_INCLUDED__
