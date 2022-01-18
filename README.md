@@ -11,8 +11,9 @@ make
 ```
 `src/flashdbsim_i.h` is the only file exposed for users, you should only include this file in your program. 
 
-Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html)
+`class BMgr` in file `BufferAlgorithm.h` is a virtual base class, all buffer algorithms should inherit this class. 
 
+Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html)
 
 ## Copyright
 [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html) was originally developed in 2008 by [KDELab of USTC](http://kdelab.ustc.edu.cn/index.html). And was redeveloped by me in 2022. The main changes are as follows：
