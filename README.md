@@ -15,7 +15,7 @@ Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsi
 
 
 ## Copyright
-[Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html) was originally developed in 2008 by [KDELab of USTC](http://kdelab.ustc.edu.cn/index.html). And was redevelopment by me in 2022. The main changes are as follows：
+[Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html) was originally developed in 2008 by [KDELab of USTC](http://kdelab.ustc.edu.cn/index.html). And was redeveloped by me in 2022. The main changes are as follows：
 - A major rewrite/reorganization of the code.
 - Greatly simplify code structure, get rid of DLL and Visual Studio framework. Now the simulator doesn't depend on any Windows library. 
 - Generalize to almost all operating systems including Linux, Windows, macOS, FreeBSD. etc. 
