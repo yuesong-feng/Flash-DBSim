@@ -1,4 +1,5 @@
 #include "FTL01.h"
+#include "limits.h"
 
 /* Constructor of FTL01 */
 FTL01::FTL01(void) {
