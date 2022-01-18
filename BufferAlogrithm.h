@@ -14,9 +14,9 @@ using namespace std;
 typedef map<int,int>::value_type  valType;
 typedef int PID;
 
-#define DEFBUFSIZE 1536//��������С
+#define DEFBUFSIZE 1536//缓冲区大小
 
-#define FRAMESIZE 2048//��������֡��С
+#define FRAMESIZE 2048//缓冲区中帧大小
 
 typedef struct bFrame {
 	char field[FRAMESIZE];
@@ -31,7 +31,7 @@ public:
 	~NewPage(){}
 } NewPage;
 
-/*�������㷨���࣬���еĻ������㷨���Ӹ���̳�*/
+/*缓冲区算法基类，所有的缓冲区算法都从该类继承*/
 class BMgr
 {
 public:
