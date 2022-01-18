@@ -1,4 +1,5 @@
 SRC=$(wildcard src/*.cpp)
+PROG=$(wildcard *.cpp)
 
 main:
-	clang++ $(SRC) BufferAlogrithm.cpp LRU.cpp main.cpp
+	clang++ $(SRC) $(PROG) -o main
