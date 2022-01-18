@@ -2,7 +2,7 @@
 
 Flash-DBSim is a simulation tool for evaluating Flash-based database algorithms used for flash-based researches, we'd like to make Flash-DBSim useful for all researchers in their researches and experiments.
 
-Original paper: [Flash-DBSim: A simulation tool for evaluating Flash-based database algorithms](https://ieeexplore.ieee.org/document/5234967)
+Original paper by Su Xuan: [Flash-DBSim: A simulation tool for evaluating Flash-based database algorithms](https://ieeexplore.ieee.org/document/5234967)
 
 ## how to use
 ```bash 
