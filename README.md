@@ -7,18 +7,20 @@ Flash-DBSim is a simulation tool for evaluating Flash-based database algorithms 
 make
 ./run
 ```
-`src/flashdbsim_i` is the only file exposed for users, you should only include this file in your program. 
+`src/flashdbsim_i.h` is the only file exposed for users, you should only include this file in your program. 
 
 Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html)
 
+If you just want to use the library, you only need to care about the `src/flashdbsim_i.h` and the shared library `Flash-DBSim.o`.
+
 ## Copyright
 [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsim/index_en.html) was originally developed in 2008 by [KDELab of USTC](http://kdelab.ustc.edu.cn/index.html). And was redevelopment by me in 2022. The main changes are as follows：
-- A major rewrite/reorganization of the code
-- Greatly simplify the code structure, get rid of DLL and Visual Studio framework
-- Support multiple os and platform including Linux, macOS, Windows, FreeBSD, etc
-- Migrate to modern C++ 11
-- Change coding method to UFT-8 to fix the disordered code problem
-- Numerous other bug fixed
+- A major rewrite/reorganization of the code.
+- Greatly simplify code structure, get rid of DLL and Visual Studio framework. Now the simulator doesn't depend on any Windows library. 
+- Generalize to almost all operating systems including Linux, Windows, macOS, FreeBSD. etc. 
+- Migrate to modern C++11, but is downward compatible with older versions.
+- Change coding method to UFT-8 to fix the disordered code problem.
+- Numerous other bugs were fixed.
 
 Flash-DBSim Simulation System. Copyright © 2008-2009, KDELab@USTC. All rights reserved.
 
