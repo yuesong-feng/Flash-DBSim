@@ -1,5 +1,7 @@
 # Flash-DBSim Simulation System
 
+Flash-DBSim is a simulator used for flash-based researches, we'd like to make Flash-DBSim useful for all researchers in their researches and experiments.
+
 ## how to use
 ```bash 
 make
