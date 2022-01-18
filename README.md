@@ -5,7 +5,7 @@ Flash-DBSim is a simulation tool for evaluating Flash-based database algorithms 
 ## how to use
 ```bash 
 make
-./main
+./run
 ```
 `src/flashdbsim_i` is the only file exposed for users, you should only include this file in your program. 
 
@@ -17,6 +17,7 @@ Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsi
 - Greatly simplify the code structure, get rid of DLL and Visual Studio framework
 - Support multiple os and platform including Linux, macOS, Windows, FreeBSD, etc
 - Migrate to modern C++ 11
+- Change coding method to UFT-8 to fix the disordered code problem
 - Numerous other bug fixed
 
 Flash-DBSim Simulation System. Copyright © 2008-2009, KDELab@USTC. All rights reserved.

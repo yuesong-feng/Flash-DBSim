@@ -19,10 +19,10 @@ VFD Module - NandDevice01
 +-----------------------+---+
 | id					| -	|
 |						|	|
-| blockCount			| ��	|
-| pageCountPerBlock		| ��	|
+| blockCount			| √	|
+| pageCountPerBlock		| √	|
 | pageSize				| -	|
-| eraseLimitation		| ��	|
+| eraseLimitation		| √	|
 |						|	|
 | readTime				| -	|
 | programTime			| -	|
@@ -30,18 +30,18 @@ VFD Module - NandDevice01
 +-----------------------+---+ ('-' means not necessary)
 
 Others:
-	�� NandDevice01 only stores the I/O counters.
-	�� NandDevice01 simulates a NAND-type device.
-	�� NandDevice01 cannot read/write page or erase block when the corresponding block was physically broken.
-	�� It's a signal of physically broken when the erase count of one block is larger than eraseLimitation.
+	· NandDevice01 only stores the I/O counters.
+	· NandDevice01 simulates a NAND-type device.
+	· NandDevice01 cannot read/write page or erase block when the corresponding block was physically broken.
+	· It's a signal of physically broken when the erase count of one block is larger than eraseLimitation.
 
 Exception List
- �� Constructor/Destructor - None
- �� QueryInterface
+ · Constructor/Destructor - None
+ · QueryInterface
 	- RV_ERROR_UNSUPPORT_INTERFACE: The specified interface is not supported in NandDevice01.
- �� GetReadCount/GetWriteCount/GetEraseCount - None
- �� Initialize/Release - None
- �� EraseBlock/ReadPage/WritePage
+ · GetReadCount/GetWriteCount/GetEraseCount - None
+ · Initialize/Release - None
+ · EraseBlock/ReadPage/WritePage
 	- RV_ERROR_FLASH_BLOCK_BROKEN: The block supposed to be erased is physically broken.
 
 Update History
