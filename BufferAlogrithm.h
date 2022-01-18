@@ -4,17 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <map>
-#include <src/flashdbsim_i.h>
+#include "src/flashdbsim_i.h"
 
 using namespace std;
-
-
-#ifdef _DEBUG
-#include <assert.h>
-#define ASSERT(booleanExpression)	assert(booleanExpression)
-#else
-#define ASSERT(booleanExpression)
-#endif //_DEBUG
 
 #define LBA_IS_INVALID 0;
 #define LBA_IS_VALID 1;
@@ -22,9 +14,9 @@ using namespace std;
 typedef map<int,int>::value_type  valType;
 typedef int PID;
 
-#define DEFBUFSIZE 1536//»º³åÇø´óÐ¡
+#define DEFBUFSIZE 1536//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
 
-#define FRAMESIZE 2048//»º³åÇøÖÐÖ¡´óÐ¡
+#define FRAMESIZE 2048//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ð¡
 
 typedef struct bFrame {
 	char field[FRAMESIZE];
@@ -39,7 +31,7 @@ public:
 	~NewPage(){}
 } NewPage;
 
-/*»º³åÇøËã·¨»ùÀà£¬ËùÓÐµÄ»º³åÇøËã·¨¶¼´Ó¸ÃÀà¼Ì³Ð*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½ÐµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½Ì³ï¿½*/
 class BMgr
 {
 public:
