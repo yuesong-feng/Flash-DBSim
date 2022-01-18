@@ -20,7 +20,7 @@ Full details: Please refer to [Flash-DBSim](http://kdelab.ustc.edu.cn/flash-dbsi
 - Greatly simplify code structure, get rid of DLL and Visual Studio framework. Now the simulator doesn't depend on any Windows library. 
 - Generalize to almost all operating systems including Linux, Windows, macOS, FreeBSD. etc. 
 - Migrate to modern C++11, but is downward compatible with older versions.
-- Change coding method to UFT-8 to fix the disordered code problem.
+- Change coding method to UTF-8 to fix the disordered code problem.
 - Numerous other bugs were fixed.
 
 Flash-DBSim Simulation System. Copyright © 2008-2009, KDELab@USTC. All rights reserved.
