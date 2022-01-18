@@ -15,7 +15,7 @@ LRU::LRU() {
 }
 
 LRU::~LRU() {
-  //�ͷ�lru����
+  //释放lru链表
   LRUElement* p = mru;
   while (p != NULL) {
     mru = mru->LessRecent;
@@ -24,7 +24,7 @@ LRU::~LRU() {
   }
   lru = mru = NULL;
 
-  //�ͷſ��ƿ�ڵ�
+  //释放控制块节点
   LRUBCB* pb = NULL;
   LRUBCB* head = NULL;
   ;
@@ -42,7 +42,7 @@ LRU::~LRU() {
 }
 
 void LRU::Init() {
-  //�ͷ�lru����
+  //释放lru链表
   LRUElement* p = mru;
   while (p != NULL) {
     mru = mru->LessRecent;
@@ -51,7 +51,7 @@ void LRU::Init() {
   }
   lru = mru = NULL;
 
-  //�ͷſ��ƿ�ڵ�
+  //释放控制块节点
   LRUBCB* pb = NULL;
   LRUBCB* head = NULL;
   ;
@@ -66,7 +66,7 @@ void LRU::Init() {
   }
   pb = head = NULL;
 
-  /*��ʼ��������*/
+  /*初始化缓冲区*/
   for (int i = 0; i < DEFBUFSIZE; i++) {
     ftop[i] = -1;
     ptob[i] = NULL;
@@ -87,23 +87,23 @@ int LRU::FixPage(int page_id) {
   LRUBCB* pb = NULL;
   pb = PageToLRUBCB(page_id);
 
-  /*��������1*/
+  /*读计数加1*/
   total++;
 
-  /*����ҳ�ڻ��������Ѵ���*/
+  /*若该页在缓冲区中已存在*/
   if (pb != NULL) {
     frid = pb->frame_id;
     AdjustLRUList(frid);
 
-    /*���д�����1*/
+    /*命中次数加1*/
     hit++;
 
     return frid;
-  } else  // ����ҳ���ڻ�������
+  } else  // 若该页不在缓冲区中
   {
     frid = SelectVictim();
 
-    /*���������£���ʱӦ�ôӶ����洢��������Ҫ���ص�����*/
+    /*正常情形下，此时应该从二级存储器读入需要加载的数据*/
     rv = f_read_page(page_id, (BYTE*)(buf[frid].field), 0, FRAMESIZE);
     if (rv == RV_ERROR_INVALID_PAGE_STATE) {
       printf("page readed is invalid\n");
@@ -116,14 +116,14 @@ int LRU::FixPage(int page_id) {
 
     ftop[frid] = page_id;
     pb = ptob[hk];
-    /*���µ�LRUBCB���ӵ�Ͱ��β��*/
+    /*将新的LRUBCB链接到桶的尾部*/
     if (pb != NULL) {
       while (pb->next != NULL) {
         pb = pb->next;
       }
       pb->next = new LRUBCB();
       pb = pb->next;
-    } else  //ͰΪ��
+    } else  //桶为空
     {
       pb = new LRUBCB();
       ptob[hk] = pb;
@@ -145,26 +145,26 @@ NewPage LRU::FixNewPage(LBA lba) {
   int frid = -1;
   LRUBCB* pb = NULL;
 
-  /* �������������ҳ */
+  /* 申请分配新数据页 */
   f_alloc_page(1, &pid);
   if (pid == -1) printf("there is no free page in the flash memory");
   ASSERT(pid >= 0);
 
-  /*ע��ӳ����*/
+  /*注册映射项*/
   RegistEntry(lba, pid);
 
-  /* �ڻ�������Ѱ�ҿ��п飬���ڴ洢������ҳ�е�����*/
+  /* 在缓冲区中寻找空闲块，用于存储新数据页中的数据*/
   frid = SelectVictim();
   ftop[frid] = pid;
   pb = ptob[hash(pid)];
-  /*���µ�LRUBCB���ӵ�Ͱ��β��*/
+  /*将新的LRUBCB链接到桶的尾部*/
   if (pb != NULL) {
     while (pb->next != NULL) {
       pb = pb->next;
     }
     pb->next = new LRUBCB();
     pb = pb->next;
-  } else  //ͰΪ��
+  } else  //桶为空
   {
     pb = new LRUBCB();
     ptob[hash(pid)] = pb;
@@ -221,7 +221,7 @@ int LRU::WriteDirty() {
     pb = ptob[i];
     while (pb != NULL) {
       if (pb->dirty == 1) {
-        //�������ʱ������Ӧ�ý���ҳд�ض����洢��
+        //程序结束时，我们应该将脏页写回二级存储器
         rv = f_write_page(pb->page_id, (BYTE*)(buf[pb->frame_id].field), 0,
                           FRAMESIZE);
         if (rv == RV_ERROR_FLASH_NO_MEMORY) {
@@ -300,9 +300,9 @@ void LRU::RemoveLRUBCB(LRUBCB* pb) {
   LRUBCB* head = NULL;
   head = ptob[hash(pb->page_id)];
 
-  /* ����LRUBCB������Ͱ���ײ� */
+  /* 若该LRUBCB正好在桶的首部 */
   if (pb == head) {
-    /* ���Ͱ�ĳ��ȴ���1������Ҫά��Ͱ����������*/
+    /* 如果桶的长度大于1，则需要维护桶的其它部分*/
     if (head->next != NULL) {
       head = head->next;
       ptob[hash(pb->page_id)] = head;
@@ -311,7 +311,7 @@ void LRU::RemoveLRUBCB(LRUBCB* pb) {
       delete pb;
       pb = NULL;
       head = NULL;
-    } else  //��Ͱ��ֻ��һ��Ԫ��
+    } else  //若桶中只有一个元素
     {
       ptob[hash(pb->page_id)] = NULL;
       ftop[pb->frame_id] = -1;
@@ -319,7 +319,7 @@ void LRU::RemoveLRUBCB(LRUBCB* pb) {
       delete pb;
       pb = NULL;
     }
-  } else  //��Ͱ������LRUBCB����ȷλ��
+  } else  //在桶内需找LRUBCB的正确位置
   {
     while (head->next != pb) {
       head = head->next;
@@ -334,7 +334,7 @@ void LRU::RemoveLRUBCB(LRUBCB* pb) {
   return;
 }
 
-/* ��LRU�û������У�ÿ��ֻ��ɾ��lruָ���Ԫ�أ�������һ�㻯����*/
+/* 在LRU置换策略中，每次只需删除lru指向的元素，这里做一般化处理*/
 void LRU::RemoveLRUEle(int frame_id) {
   ASSERT(frame_id >= 0);
   LRUElement* elem = NULL;
@@ -348,11 +348,11 @@ void LRU::RemoveLRUEle(int frame_id) {
   }
 
   if (elem == NULL) {
-    return;  //�Ҳ�����Ӧ��Ԫ��
+    return;  //找不到相应的元素
   } else {
-    if (elem == lru)  // lruָ��Ҫɾ����Ԫ��
+    if (elem == lru)  // lru指向要删除的元素
     {
-      if (elem == mru)  // mruҲָ��Ҫɾ����Ԫ��
+      if (elem == mru)  // mru也指向要删除的元素
       {
         lru = mru = NULL;
         delete elem;
@@ -361,14 +361,14 @@ void LRU::RemoveLRUEle(int frame_id) {
         lru->LessRecent = NULL;
         delete elem;
       }
-    } else  //��lru��������ɾ������β�����Ԫ�أ�ֻ�����ڶ��̷߳���ͬһԪ��ʱ����������
+    } else  //在lru策略中能删除除链尾以外的元素，只出现在多线程访问同一元素时（数据锁）
     {
-      if (elem == mru)  // mruָ��Ҫɾ����Ԫ��
+      if (elem == mru)  // mru指向要删除的元素
       {
         mru = mru->LessRecent;
         mru->MoreRecent = NULL;
         delete elem;
-      } else  //ɾ������ͷ����β��Ԫ��
+      } else  //删除除链头和链尾的元素
       {
         elem->MoreRecent->LessRecent = elem->LessRecent;
         elem->LessRecent->MoreRecent = elem->MoreRecent;
@@ -387,7 +387,7 @@ void LRU::InsertLRUEle(int frame_id) {
   elem->frame_id = frame_id;
   elem->LessRecent = NULL;
   elem->MoreRecent = NULL;
-  /* ������Ϊ�� */
+  /* 若链表为空 */
   if (mru == NULL) {
     mru = elem;
     lru = mru;
@@ -404,7 +404,7 @@ void LRU::AdjustLRUList(int frame_id) {
   LRUElement* elem = NULL;
   elem = mru;
 
-  /* ������Ϊ��*/
+  /* 若链表为空*/
   if (elem == NULL) {
     return;
   }
@@ -413,20 +413,20 @@ void LRU::AdjustLRUList(int frame_id) {
     elem = elem->LessRecent;
   }
 
-  /*��û�ҵ�*/
+  /*若没找到*/
   if (elem == NULL) {
     return;
   } else {
-    if (elem == mru)  //���ʵ�Ԫ�������ף�ֱ�ӷ���
+    if (elem == mru)  //访问的元素在链首，直接返回
     {
       return;
-    } else  //���ʵ�Ԫ������β�������Ƶ�����
+    } else  //访问的元素在链尾，将其移到链首
     {
-      if (elem == lru)  //�����ʵ�Ԫ��Ϊ��βԪ��
+      if (elem == lru)  //若访问的元素为链尾元素
       {
         lru = lru->MoreRecent;
         lru->LessRecent = NULL;
-      } else  //���ʳ����׺���β֮���Ԫ��
+      } else  //访问除链首和链尾之外的元素
       {
         elem->LessRecent->MoreRecent = elem->MoreRecent;
         elem->MoreRecent->LessRecent = elem->LessRecent;
@@ -446,19 +446,19 @@ int LRU::SelectVictim() {
   int frid = -1;
   int rv = -1;
 
-  /* ���ɾ�ҳ��������ҳ������Ϊ�գ���ѡ�񻺳����еĵ�һ�� */
+  /* 若干净页链表和脏页链表都为空，则选择缓冲区中的第一块 */
   if (lru == NULL) {
     return 0;
   }
 
-  /* �ӻ��������ҿ��п� */
+  /* 从缓冲区中找空闲块 */
   for (int i = 0; i < DEFBUFSIZE; i++) {
     if (ftop[i] == -1) {
       return i;
     }
   }
 
-  /* �����������޿���ҳ�������ѡ���û�ҳ��ִ���û����ԣ�*/
+  /* 若缓冲区已无空闲页，则从中选择置换页（执行置换策略）*/
   elem = lru;
   lru = lru->MoreRecent;
   lru->LessRecent = NULL;
@@ -466,7 +466,7 @@ int LRU::SelectVictim() {
   pb = PageToLRUBCB(ftop[frid]);
 
   if (pb->dirty == 1) {
-    //��������£�Ӧ�ý�����д�ض����洢��������ֻ����
+    //正常情况下，应该将数据写回二级存储器，这里只计数
     rv = f_write_page(pb->page_id, (BYTE*)(buf[pb->frame_id].field), 0,
                       FRAMESIZE);
     if (rv == RV_ERROR_FLASH_NO_MEMORY) printf("no more flash memory \n");
@@ -474,7 +474,7 @@ int LRU::SelectVictim() {
     flashwritecount++;
   }
 
-  /* ���û�֡��Ԫ��Ϣ��������Ϣɾ�� */
+  /* 将置换帧的元信息和链表信息删除 */
   RemoveLRUEle(frid);
   RemoveLRUBCB(pb);
   return frid;
