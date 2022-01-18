@@ -35,8 +35,8 @@ public:
 class BMgr
 {
 public:
-    BMgr(void);
-    ~BMgr(void);
+    BMgr() = default;
+    virtual ~BMgr() = default;
 
 	virtual void Init() = 0;
     virtual int FixPage(int/*page_id*/) = 0;

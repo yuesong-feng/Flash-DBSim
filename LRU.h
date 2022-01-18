@@ -1,5 +1,5 @@
 #pragma once
-#include "BufferAlogrithm.h"
+#include "BufferAlgorithm.h"
 
 typedef struct LRUBCB {
  public:
