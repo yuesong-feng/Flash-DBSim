@@ -1,11 +1,12 @@
-FlashDBSimDll Changlog
+FlashDBSim Changlog
 
 version 2.0
-- A major rewrite/reorganization of the code
-- Greatly simplify the code structure, get rid of DLL and Visual Studio framework
-- Support multiple os and platform including Linux, macOS, Windows, FreeBSD, etc
-- Migrate to modern C++ 11
-- Numerous other bug fixed
+- A major rewrite/reorganization of the code.
+- Greatly simplify code structure, get rid of DLL and Visual Studio framework. Now the simulator doesn't depend on any Windows library. 
+- Generalize to almost all operating systems including Linux, Windows, macOS, FreeBSD. etc. 
+- Migrate to modern C++11, but is downward compatible with older versions.
+- Change coding method to UFT-8 to fix the disordered code problem.
+- Numerous other bugs were fixed.
 
 version 1.6
 - A major rewrite/reorganization of the code
